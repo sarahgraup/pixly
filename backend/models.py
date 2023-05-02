@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -23,23 +22,23 @@ class Image (db.Model):
     )
 
     date_time_created = db.Column(
-        db.Datetime,
+        db.DateTime,
     )
 
     gps_latitude = db.Column(
-        db.string,
+        db.String,
     )
 
     gps_longitude = db.Column(
-        db.string,
+        db.String,
     )
 
     make = db.Column(
-        db.string,
+        db.String,
     )
 
     model = db.Column(
-        db.string,
+        db.String,
     )
 
 
