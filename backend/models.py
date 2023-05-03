@@ -50,6 +50,7 @@ class Image (db.Model):
     @classmethod
     def uploadImage(cls, path, date_time_created, gps_latitude, gps_longitude, make, model):
         """uploads image properties to db"""
+        
 
     @classmethod
     def downloadImage(cls, id):
