@@ -11,7 +11,7 @@ db.drop_all()
 db.create_all()
 
 image1 = Image(
-    date_time_created=now,
+    date_time_created=now.strftime("%m/%d/%Y, %H:%M:%S"),
     date_time_uploaded=now,
     gps_latitude="40.76",
     gps_longitude="40.76",
@@ -21,7 +21,7 @@ image1 = Image(
     caption="I am a test caption")
 
 image2 = Image(
-    date_time_created=now,
+    date_time_created=now.strftime("%m/%d/%Y, %H:%M:%S"),
     date_time_uploaded=now,
     gps_latitude="40.76",
     gps_longitude="40.76",
