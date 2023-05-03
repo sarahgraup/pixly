@@ -11,15 +11,34 @@ s3 = boto3.client(
     aws_secret_access_key=os.getenv('SECRET')
 )
 
-def get_bucket():
+def get_bucket_name():
+    """get bucket name"""
     client = s3
     bucket_resp = client.list_buckets()
-    print(f"bucket response {bucket_resp['Buckets']}")
+    return bucket_resp[0].Name
 
 
-get_bucket()
+def upload_file(file_name):
+    bucket = get_bucket_name()
+
+    s3.upload_file(file_name, bucket)
+ 
+
+# def download_file(file_name, save_as_name):
+#     bucket=get_bucket_name()
+    
+#     s3.download_file(bucket, file_name, save_as_name)
 
 
+# def upload_image(inp_file_name, inp_file_key, content_type ):
+#     """function to upload image to pixly"""
+#     bucket_name = get_bucket_name()
+#     s3_upload_small_files(inp_file_name, bucket_name, inp_file_key, content_type)
+
+
+
+
+#bucket response [{'Name': 'sarahgraup-pixly', 'CreationDate': datetime.datetime(2023, 5, 2, 20, 44, 10, tzinfo=tzutc())}]
 
 # my_config = Config(
 #     region_name = 'us-west-2',

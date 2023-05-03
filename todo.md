@@ -1,9 +1,12 @@
 ## Back End
+- aws pull from bucket to understand metadata
+- image pillow metadata
 - create db for image metadata and path
     - sql alchemy model
 - orm method to talk to db
     - filter, get, add
 - routes
+- 
 
 
 ## Front End
