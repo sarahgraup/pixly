@@ -20,3 +20,13 @@
  *pillow library for exif* : https://pillow.readthedocs.io/en/stable/reference/ExifTags.html
 
 
+Components to routes 
+- gallery homepage get all images or get all images by search -> route get all images or get all images by search
+- upload function -> post or get single image 
+- 
+- edit function -> post to single image "after handle submit"
+            -> get edit image before "done"
+
+
+
+
