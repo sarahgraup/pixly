@@ -1,7 +1,15 @@
 from flask_sqlalchemy import SQLAlchemy
-import datetime
+from datetime import datetime
+import PIL.Image
+from PIL.ExifTags import TAGS
 
 db = SQLAlchemy()
+
+IMG_EXIF_TAGS = ["GPSLatitude",
+                 "GPSLongitude",
+                 "DateTimeOriginal",
+                 "Make",
+                 "Model"]
 
 
 def connect_db(app):
@@ -27,7 +35,7 @@ class Image (db.Model):
         db.DateTime,
     )
     date_time_created = db.Column(
-        db.DateTime,
+        db.String,
     )
 
     gps_latitude = db.Column(
@@ -56,22 +64,61 @@ class Image (db.Model):
         nullable=False
     )
 
+    # @classmethod
+    # def add_image_data(cls,
+    #                       path,
+    #                       caption,
+    #                       date_time_uploaded=None,
+    #                       date_time_created=None,
+    #                       gps_latitude=None,
+    #                       gps_longitude=None,
+    #                       make=None,
+    #                       model=None):
+    #     """uploads image properties to db"""
+    #     # change to add or save image data
+    #     date_time_uploaded= datetime.datetime.utcnow()
+
+    #     image = Image(path=path,
+    #                   caption=caption,
+    #                   date_time_uploaded=date_time_uploaded,
+    #                   date_time_created=date_time_created,
+    #                   gps_latitude=gps_latitude,
+    #                   gps_longitude=gps_longitude,
+    #                   make=make,
+    #                   model=model)
+    #     db.session.add(image)
+    #     db.session.commit()
+    #     return image
+
     @classmethod
-    def upload_image_data(cls,
-                          path,
-                          caption,
-                          date_time_uploaded=None,
-                          date_time_created=None,
-                          gps_latitude=None,
-                          gps_longitude=None,
-                          make=None,
-                          model=None):
+    def add_image_data(
+            cls,
+            path,
+            file,
+            caption):
         """uploads image properties to db"""
-        #change to add or save image data
-        # date_time_uploaded= datetime.datetime.utcnow()
+        # change to add or save image data
+
+        print(f"add_img_data file {file}")
+        exif_data = cls.get_img_exif_data(file=file)
+        gps_latitude = gps_longitude = date_time_created = make = model = None
+        if "GPSLatitude" in exif_data:
+            gps_latitude = exif_data["GPSLatitude"]
+        if "GPSLongitude" in exif_data:
+            gps_longitude = exif_data["GPSLongitude"]
+        if "DateTimeOriginal" in exif_data:
+            date_time_created = exif_data["DateTimeOriginal"]
+        if "Make" in exif_data:
+            make = exif_data["Make"]
+        if "Model" in exif_data:
+            model = exif_data["Model"]
+
+        date_time_uploaded = datetime.utcnow()
+        print(f"utc now {date_time_uploaded}")
 
         image = Image(path=path,
                       caption=caption,
+                      date_time_uploaded=date_time_uploaded,
                       date_time_created=date_time_created,
                       gps_latitude=gps_latitude,
                       gps_longitude=gps_longitude,
@@ -82,7 +129,7 @@ class Image (db.Model):
         return image
 
     @classmethod
-    def download_image_data(cls, id): #fetch
+    def download_image_data(cls, id):  # fetch
         """downloads image properties from db"""
         print("download_image ran")
 
@@ -99,7 +146,7 @@ class Image (db.Model):
             return images
         else:
             # BUG: sql injections?
-            #flicker for exif data
+            # flicker for exif data
             print("inside searchterm")
             images = (cls.query
                       .filter(cls.caption.ilike(f"%{search_term}%"))
@@ -107,3 +154,19 @@ class Image (db.Model):
                       .all())
         print(images)
         return images
+
+    @classmethod
+    def get_img_exif_data(cls, file):
+        """Get exif data from img"""
+        # open image
+        img = PIL.Image.open(file)
+        exif_data = img._getexif()
+        print(f"exif_data={exif_data}")
+        img.close()
+
+        img_tag_exif_data = {}
+        for key_tag in exif_data:
+            tag = TAGS[key_tag]
+            if tag in IMG_EXIF_TAGS:
+                img_tag_exif_data[tag] = exif_data[key_tag]
+        return img_tag_exif_data
