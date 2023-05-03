@@ -67,6 +67,7 @@ class Image (db.Model):
                           make=None,
                           model=None):
         """uploads image properties to db"""
+        #change to add or save image data
         # date_time_uploaded= datetime.datetime.utcnow()
 
         image = Image(path=path,
@@ -81,7 +82,7 @@ class Image (db.Model):
         return image
 
     @classmethod
-    def download_image_data(cls, id):
+    def download_image_data(cls, id): #fetch
         """downloads image properties from db"""
         print("download_image ran")
 
@@ -98,6 +99,7 @@ class Image (db.Model):
             return images
         else:
             # BUG: sql injections?
+            #flicker for exif data
             print("inside searchterm")
             images = (cls.query
                       .filter(cls.caption.ilike(f"%{search_term}%"))
