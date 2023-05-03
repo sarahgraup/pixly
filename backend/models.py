@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
+import datetime
 
 db = SQLAlchemy()
 
@@ -23,6 +23,9 @@ class Image (db.Model):
         autoincrement=True
     )
 
+    date_time_uploaded = db.Column(
+        db.DateTime,
+    )
     date_time_created = db.Column(
         db.DateTime,
     )
@@ -44,18 +47,57 @@ class Image (db.Model):
     )
 
     path = db.Column(
-        db.String
+        db.String,
+        nullable=False
+    )
+
+    caption = db.Column(
+        db.String,
+        nullable=False
     )
 
     @classmethod
-    def uploadImage(cls, path, date_time_created, gps_latitude, gps_longitude, make, model):
+    def upload_image_data(cls,
+                     path,
+                     caption,
+                     date_time_uploaded=None,
+                     date_time_created=None,
+                     gps_latitude=None,
+                     gps_longitude=None,
+                     make=None,
+                     model=None):
         """uploads image properties to db"""
-        
+        # date_time_uploaded= datetime.datetime.utcnow()
+
+        image = Image(path=path,
+                    caption=caption,
+                    date_time_created=date_time_created,
+                    gps_latitude=gps_latitude,
+                    gps_longitude=gps_longitude,
+                    make=make,
+                    model=model)
+        db.session.add(image)
+        db.session.commit()
+        return image
 
     @classmethod
-    def downloadImage(cls, id):
+    def download_image_data(cls, id):
         """downloads image properties from db"""
+        print("download_image ran")
+
+        image = cls.query.get(id)
+        return image
 
     @classmethod
-    def deleteImage(cls, id):
-        """deletes image properties from db"""
+    def get_images_optional_search(cls, search_term=None):
+        """downloads images matching search_term from db"""
+        print("inside get_images_by_search")
+        if not search_term:
+            print("inside NOT search")
+            images = cls.query.all()
+            return images
+        else:
+            print("inside searchterm")
+            images = cls.query.filter(cls.caption.ilike(f"%{search_term}%")).order_by(cls.date_time_uploaded).all()
+        print(images)
+        return images
