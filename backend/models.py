@@ -58,24 +58,24 @@ class Image (db.Model):
 
     @classmethod
     def upload_image_data(cls,
-                     path,
-                     caption,
-                     date_time_uploaded=None,
-                     date_time_created=None,
-                     gps_latitude=None,
-                     gps_longitude=None,
-                     make=None,
-                     model=None):
+                          path,
+                          caption,
+                          date_time_uploaded=None,
+                          date_time_created=None,
+                          gps_latitude=None,
+                          gps_longitude=None,
+                          make=None,
+                          model=None):
         """uploads image properties to db"""
         # date_time_uploaded= datetime.datetime.utcnow()
 
         image = Image(path=path,
-                    caption=caption,
-                    date_time_created=date_time_created,
-                    gps_latitude=gps_latitude,
-                    gps_longitude=gps_longitude,
-                    make=make,
-                    model=model)
+                      caption=caption,
+                      date_time_created=date_time_created,
+                      gps_latitude=gps_latitude,
+                      gps_longitude=gps_longitude,
+                      make=make,
+                      model=model)
         db.session.add(image)
         db.session.commit()
         return image
@@ -97,7 +97,11 @@ class Image (db.Model):
             images = cls.query.all()
             return images
         else:
+            # BUG: sql injections?
             print("inside searchterm")
-            images = cls.query.filter(cls.caption.ilike(f"%{search_term}%")).order_by(cls.date_time_uploaded).all()
+            images = (cls.query
+                      .filter(cls.caption.ilike(f"%{search_term}%"))
+                      .order_by(cls.date_time_uploaded)
+                      .all())
         print(images)
         return images
