@@ -1,6 +1,7 @@
 import './App.css';
-import React, {useState, useEffect} from "react"
+import React, { useState, useEffect } from "react"
 import PixlyApi from './api';
+import UploadImageForm from './forms/UploadImageForm';
 
 /**Pixly application
  * 
@@ -15,41 +16,51 @@ import PixlyApi from './api';
  * App -> { RoutesList, NavBar }
  */
 function App() {
-const [isLoading, setIsLoading] = useState(false);
-const [imagesUrls, setImagesUrls] = useState(null);
-const [currSearchTerm, setCurrSearchTerm] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [imagesUrls, setImagesUrls] = useState(null);
+  const [currSearchTerm, setCurrSearchTerm] = useState(null);
+  const [uploadImage, setUploadImage] = useState(null);
 
 
-useEffect(function loadImageUrls(){
-  async function fetchUrls(){
-    setIsLoading(true);
-    try{
-      if(currSearchTerm!==null){
-        const urls = PixlyApi.getImagesUrlsOptionalSearch(currSearchTerm);
-        setImagesUrls(urls);
+  useEffect(function loadImageUrls() {
+    async function fetchUrls() {
+      setIsLoading(true);
+      try {
+        if (currSearchTerm !== null) {
+          const urls = PixlyApi.getImagesUrlsOptionalSearch(currSearchTerm);
+          setImagesUrls(urls);
+
+        }
+        if (currSearchTerm === null) {
+          const urls = PixlyApi.getImagesUrlsOptionalSearch();
+          setImagesUrls(urls);
+
+        }
+
+
+      } catch (err) {
+        console.error("fetchUrls problem fetching", err);
 
       }
-      if(currSearchTerm===null){
-        const urls = PixlyApi.getImagesUrlsOptionalSearch();
-        setImagesUrls(urls);
-
-      }
-
-      
-    }catch(err){
-      console.error("fetchUrls problem fetching", err);
-
+      setIsLoading(false);
     }
-    setIsLoading(false);
+  }, [imagesUrls, currSearchTerm]);
+
+  async function handleUpload(formData) {
+    try {
+      const newImage = await PixlyApi.addNewImage(formData);
+      setUploadImage(newImage);
+    } catch (err) {
+      console.error(err);
+    }
   }
-},[imagesUrls, currSearchTerm]);
 
 
 
 
   return (
     <div className="App">
-      
+      <UploadImageForm handleUpload={handleUpload}></UploadImageForm>
 
     </div>
   );
