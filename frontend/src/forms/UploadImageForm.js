@@ -1,10 +1,10 @@
 import { useState } from "react";
 /**
  * UploadImageForm component
- * 
+ *
  * State:
  * Form Data
- * 
+ *
  * Props:
  * handleUpload
  */
@@ -24,10 +24,10 @@ function UploadImageForm({ handleUpload }) {
 
     /**handle form data changing */
     function handleChange(evt) {
-        console.log("value of file", evt.target.files[0]);
         if (evt.target.name === "file") {
+            console.log("value of file", evt.target.files[0]);
             setFormData(f => ({
-                ...f,
+                ["caption"]: f["caption"],
                 ["file"]: evt.target.files[0],
             }));
         }

@@ -14,7 +14,7 @@ const BASE_URL = "http://127.0.0.1:5001";
 
 class PixlyApi {
 
-  static async request(endpoint, data = {}, method = "get") {
+  static async request(endpoint, data = {}, method = "get", header=null) {
     console.debug("API Call:", endpoint, data, method);
 
     const url = `${BASE_URL}/${endpoint}`;
@@ -24,7 +24,13 @@ class PixlyApi {
       : {};
     console.log("params=", params);
     try {
-      const res = (await axios({ url, method, data, params }));
+      let res = null;
+      if (header === null){
+        res = (await axios({ url, method, data, params }));
+      }
+      else {
+        res = (await axios({ url, method, data, params }));
+      }
       console.log("res=", res);
       const resData = res.data;
       console.log("resData=", resData);
@@ -32,7 +38,7 @@ class PixlyApi {
     } catch (err) {
       // console.error("API Error:", err.response);
       // let message = err.response.data.error.message;
-      // let message = err;
+      let message = err;
       // console.log("message", message);
       throw Array.isArray(message) ? message : [message];
     }
@@ -66,10 +72,11 @@ class PixlyApi {
 
   /** Add new image to aws from form submission */
 
-  static async addNewImage(formData) {
+  static async addNewImage(data) {
     console.log("inside addNewImage");
-    
-    let res = await this.request(`images/upload`, { formData }, "post");
+    console.log("data=", data)
+    const header ={ "content-type":"multipart/form-data"};
+    let res = await this.request(`images/upload`, data, "post");
     console.log("res=", res);
     return res.data.image;
   }
