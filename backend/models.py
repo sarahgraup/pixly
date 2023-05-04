@@ -129,11 +129,11 @@ class Image (db.Model):
         return image
 
     @classmethod
-    def download_image_data(cls, id):  # fetch
+    def get_image_data(cls, id):  # fetch
         """downloads image properties from db"""
         print("download_image ran")
 
-        image = cls.query.get(id)
+        image = cls.query.get_or_404(id)
         return image
 
     @classmethod
@@ -162,8 +162,8 @@ class Image (db.Model):
         img = PIL.Image.open(file)
         exif_data = img._getexif()
         # print(f"exif_data={exif_data}")
-        print(f"IMGGGGGGG {img.tell()}")
-        
+        # print(f"IMGGGGGGG {img.tell()}")
+
         # img.close()
 
         img_tag_exif_data = {}
