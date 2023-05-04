@@ -30,3 +30,6 @@ Components to routes
 
 
 
+5/4
+- handle getting one image and one image url to display
+- start on front end

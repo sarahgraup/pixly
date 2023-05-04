@@ -1,8 +1,9 @@
-const axios = require("axios");
+// const axios = require("axios");
+import axios from "axios";
 
 
 // const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
-const BASE_URL = "http://localhost:5001";
+const BASE_URL = "http://127.0.0.1:5001";
 /** API Class.
  *
  * Static class tying together methods used to get/send to to the API.
@@ -29,8 +30,10 @@ class PixlyApi {
       console.log("resData=", resData);
       return res;
     } catch (err) {
-      console.error("API Error:", err.response);
-      let message = err.response.data.error.message;
+      // console.error("API Error:", err.response);
+      // let message = err.response.data.error.message;
+      // let message = err;
+      // console.log("message", message);
       throw Array.isArray(message) ? message : [message];
     }
   }
@@ -47,7 +50,7 @@ class PixlyApi {
       return res.data.urls;
     }
     if (search_term === null) {
-      const res = await this.request(`/`);
+      const res = await this.request(`images`);
       console.log("inside null st res=", res);
       return res.data.urls;
     }
@@ -71,11 +74,19 @@ class PixlyApi {
   }
 }
 
-async function test() {
-  const url = await PixlyApi.getImageUrl(1);
-  console.log("url inside test", url);
-}
+// async function testGetImage() {
+//   const url = await PixlyApi.getImageUrl(1);
+//   console.log("url inside test", url);
+// }
 
-test();
+// async function testGetAllImages() {
+//   const url = await PixlyApi.getImagesUrlsOptionalSearch();
+//   const urlSearch = await PixlyApi.getImagesUrlsOptionalSearch("not");
+//   console.log("url inside test", url);
+//   console.log("url search inside test", urlSearch);
+// }
 
-// export default PixlyApi;
+
+// testGetAllImages();
+
+export default PixlyApi;
