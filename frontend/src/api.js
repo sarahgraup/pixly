@@ -68,6 +68,7 @@ class PixlyApi {
 
   static async addNewImage(formData) {
     console.log("inside addNewImage");
+    
     let res = await this.request(`images/upload`, { formData }, "post");
     console.log("res=", res);
     return res.data.image;

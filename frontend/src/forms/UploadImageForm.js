@@ -24,8 +24,12 @@ function UploadImageForm({ handleUpload }) {
 
     /**handle form data changing */
     function handleChange(evt) {
+        console.log("value of file", evt.target.files[0]);
         if (evt.target.name === "file") {
-            setFormData.file(evt.target.files[0]);
+            setFormData(f => ({
+                ...f,
+                ["file"]: evt.target.files[0],
+            }));
         }
         else {
             const { name, value } = evt.target;
@@ -39,11 +43,10 @@ function UploadImageForm({ handleUpload }) {
     return (
         <div className="UploadImageForm">
             <form onSubmit={handleSubmit}>
-                <label> Image
+                <label> {`Selected Image: `}
                     <input
                         type="file"
                         name="file"
-                        value={formData.file}
                         onChange={handleChange}>
                     </input>
                 </label>
@@ -55,6 +58,7 @@ function UploadImageForm({ handleUpload }) {
                         onChange={handleChange}>
                     </input>
                 </label>
+                <button type="submit" className="UploadImageForm-uploadButton">submit</button>
             </form>
         </div>
     )
