@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from flask_debugtoolbar import DebugToolbarExtension
 import PIL.Image
 from werkzeug.exceptions import NotFound, BadRequest
+from flask_cors import CORS
 
 from models import db, connect_db, Image
 from s3 import S3
@@ -15,6 +16,7 @@ load_dotenv()
 AWS_BUCKET_URL = "https://sarahgraup-pixly.s3.us-west-1.amazonaws.com"
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['SECRET_KEY'] = "secret"
 
