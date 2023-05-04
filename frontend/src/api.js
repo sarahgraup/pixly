@@ -67,7 +67,7 @@ class PixlyApi {
     console.log("inside getImageUrl");
     let res = await this.request(`images/${id}`);
     console.log("res=", res);
-    return res.data.url;
+    return res.data.urls;
   }
 
   /** Add new image to aws from form submission */

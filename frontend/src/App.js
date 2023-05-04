@@ -2,6 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from "react"
 import PixlyApi from './api';
 import UploadImageForm from './forms/UploadImageForm';
+import ImageList from './images/ImageList';
 import axios from "axios";
 
 /**Pixly application
@@ -17,36 +18,40 @@ import axios from "axios";
  * App -> { RoutesList, NavBar }
  */
 function App() {
+  console.log("Inside app");
   const [isLoading, setIsLoading] = useState(false);
   const [imagesUrls, setImagesUrls] = useState(null);
   const [currSearchTerm, setCurrSearchTerm] = useState(null);
   const [uploadImage, setUploadImage] = useState(null);
+  console.log("state app=", "imagesUrls=", imagesUrls, "isLoading", isLoading );
 
 
   useEffect(function loadImageUrls() {
+    console.log("Inside loadImageUrls");
     async function fetchUrls() {
+      console.log("Inside fetchUrls");
       setIsLoading(true);
+      let urls = null;
       try {
         if (currSearchTerm !== null) {
-          const urls = PixlyApi.getImagesUrlsOptionalSearch(currSearchTerm);
-          setImagesUrls(urls);
-
+          urls = await PixlyApi.getImagesUrlsOptionalSearch(currSearchTerm);
         }
         if (currSearchTerm === null) {
-          const urls = PixlyApi.getImagesUrlsOptionalSearch();
-          setImagesUrls(urls);
-
+          urls = await PixlyApi.getImagesUrlsOptionalSearch();
         }
-
-
       } catch (err) {
         console.error("fetchUrls problem fetching", err);
-
       }
       setIsLoading(false);
+      setImagesUrls(urls);
     }
-  }, [imagesUrls, currSearchTerm]);
+    fetchUrls();
+  }, [currSearchTerm]);
 
+  /**handleUpload:
+   * handles formdata submission from UploadImageForm
+   * formData = {file, caption}
+   */
   async function handleUpload(formData) {
     console.log("inside handleUpload");
     const {file, caption} = formData;
@@ -58,10 +63,15 @@ function App() {
     console.log("data=", data);
     try {
       const newImage = await PixlyApi.addNewImage(data);
-      setUploadImage(newImage);
+      const newUrl = newImage.urls;
+      setUploadImage(newUrl);
+      setImagesUrls(()=> [...imagesUrls, newUrl])
     } catch (err) {
       console.error(err);
     }
+  }
+  if (isLoading === true){
+    return "Im looking...";
   }
 
 
@@ -70,6 +80,7 @@ function App() {
   return (
     <div className="App">
       <UploadImageForm handleUpload={handleUpload}></UploadImageForm>
+      {imagesUrls && <ImageList imgUrls={imagesUrls} />}
 
     </div>
   );
