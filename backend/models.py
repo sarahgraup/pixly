@@ -139,9 +139,9 @@ class Image (db.Model):
     @classmethod
     def get_images_optional_search(cls, search_term=None):
         """downloads images matching search_term from db"""
-        print("inside get_images_by_search")
+        # print("inside get_images_by_search")
         if not search_term:
-            print("inside NOT search")
+            # print("inside NOT search")
             images = cls.query.all()
             return images
         else:
@@ -152,7 +152,7 @@ class Image (db.Model):
                       .filter(cls.caption.ilike(f"%{search_term}%"))
                       .order_by(cls.date_time_uploaded)
                       .all())
-        print(images)
+        # print(images)
         return images
 
     @classmethod
@@ -161,8 +161,10 @@ class Image (db.Model):
         # open image
         img = PIL.Image.open(file)
         exif_data = img._getexif()
-        print(f"exif_data={exif_data}")
-        img.close()
+        # print(f"exif_data={exif_data}")
+        print(f"IMGGGGGGG {img.tell()}")
+        
+        # img.close()
 
         img_tag_exif_data = {}
         for key_tag in exif_data:

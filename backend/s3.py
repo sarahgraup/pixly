@@ -1,5 +1,5 @@
 import os.path
-# from PIL import Image as pil_image
+import io 
 import boto3
 import os
 from dotenv import load_dotenv
@@ -44,8 +44,9 @@ class S3:
         """uploads file to s3 bucket"""
         bucket = self.get_bucket_name()
 
-        self.s3.upload_file(file_name, bucket, save_as_name)
-
+        file_name.seek(0)
+        self.s3.upload_fileobj(file_name, bucket, save_as_name)
+        
     @classmethod
     def download_file(self, file_name, save_as_name):
         """downloads file from s3 bucket"""
@@ -54,30 +55,4 @@ class S3:
         self.s3.download_file(bucket, file_name, save_as_name)
 
 
-# path = "/Users/sarahgraup/rithm/exercises/pixly/PIXLY-TEST.jpg"
-# # valid_images = [".jpg",".gif",".png",".tga"]
 
-# image = pil_image.open(path)
-# print(image)
-
-# S3.upload_file(path )
-
-
-# def upload_image(inp_file_name, inp_file_key, content_type ):
-#     """function to upload image to pixly"""
-#     bucket_name = get_bucket_name()
-#     s3_upload_small_files(inp_file_name, bucket_name, inp_file_key, content_type)
-
-
-# bucket response [{'Name': 'sarahgraup-pixly', 'CreationDate': datetime.datetime(2023, 5, 2, 20, 44, 10, tzinfo=tzutc())}]
-
-# my_config = Config(
-#     region_name = 'us-west-2',
-#     signature_version = 'v4',
-#     retries = {
-#         'max_attempts': 10,
-#         'mode': 'standard'
-#     }
-# )
-
-# client = boto3.client('kinesis', config=my_config)

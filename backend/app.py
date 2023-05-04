@@ -68,8 +68,8 @@ def handle_image_upload():
     if file:
         file_name = secure_filename(file.filename)
         image = Image.add_image_data(file=file, path=file_name, caption=caption)
-        print(image)
-        # S3.upload_file(file_name=file_name, save_as_name=file_name)
+        # print(image)
+        S3.upload_file(file_name=file, save_as_name=file_name)
 
     return "haha" #IMAGE OBJECT
 
