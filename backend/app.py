@@ -1,10 +1,10 @@
 import os
 
-from flask import Flask, request, redirect, render_template, jsonify
+from flask import Flask, request, redirect, jsonify, flash
 from werkzeug.utils import secure_filename
 from flask_debugtoolbar import DebugToolbarExtension
 import PIL.Image
-
+from werkzeug.exceptions import NotFound, BadRequest
 
 from models import db, connect_db, Image
 from s3 import S3
@@ -49,29 +49,55 @@ def get_images():
 
     return jsonify(urls=urls)
 
-
+#TODO: have errors return something with actual error message
 @app.post("/upload")
 def handle_image_upload():
     """Adds new photo to db and aws"""
     print("inside /upload")
 
     if 'file' not in request.files:
-        return redirect(request.url)
+        error_msg = "No 'file' found"
+        return jsonify(error=error_msg)
 
     file = request.files['file']
     print(f"handle_image_upload file= {file}")
     caption = request.form['caption']
 
     if file.filename == '':
-        return redirect(request.url)
+        error_msg = "No 'file' found"
+        return jsonify(error=error_msg)
 
     if file:
         file_name = secure_filename(file.filename)
-        image = Image.add_image_data(file=file, path=file_name, caption=caption)
-        # print(image)
-        S3.upload_file(file_name=file, save_as_name=file_name)
+        image = None
+        try:
+            image = Image.add_image_data(file=file, path=file_name, caption=caption)
+        except( NotFound, BadRequest):
+            error_msg = "Could not upload."
+            return jsonify(error=error_msg)
 
-    return "haha" #IMAGE OBJECT
+        # print(image)
+        try:
+            S3.upload_file(file_name=file, save_as_name=file_name)
+        except( NotFound, BadRequest):
+            error_msg = "Could not upload to aws."
+            return jsonify(error=error_msg)
+
+        return jsonify(image=image) #IMAGE OBJECT
+@app.get("/<int:id>")
+def get_image_by_id(id):
+    """
+    get request to access aws image by id and returns image
+    """
+    try:
+        image = Image.get_image_data(id=id)
+    except( NotFound, BadRequest):
+        error_msg = "Could not find image."
+        return jsonify(error=error_msg)
+
+    url = S3.get_preassigned_url(image.path)
+
+    return jsonify(url=url)
 
     # # add to db
     # # use id from db as filename
