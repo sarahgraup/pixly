@@ -1,5 +1,6 @@
 const axios = require("axios");
 
+
 // const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 const BASE_URL = "http://localhost:5001";
 /** API Class.
@@ -22,10 +23,10 @@ class PixlyApi {
       : {};
     console.log("params=", params);
     try {
-      const res = (await axios({ url, method, data, params }))
-      console.log("res=", res)
-      const resData = res.data
-      console.log("resData=", resData)
+      const res = (await axios({ url, method, data, params }));
+      console.log("res=", res);
+      const resData = res.data;
+      console.log("resData=", resData);
       return res;
     } catch (err) {
       console.error("API Error:", err.response);
@@ -70,7 +71,7 @@ class PixlyApi {
   }
 }
 
-async function test(){
+async function test() {
   const url = await PixlyApi.getImageUrl(1);
   console.log("url inside test", url);
 }
