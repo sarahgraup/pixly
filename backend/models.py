@@ -89,6 +89,18 @@ class Image (db.Model):
     #     db.session.add(image)
     #     db.session.commit()
     #     return image
+    def serialize(self):
+        return {
+            "date_time_uploaded": self.date_time_uploaded,
+            "date_time_created": self.date_time_created,
+            "gps_latitude": self.gps_latitude,
+            "gps_longitude": self.gps_longitude,
+            "make": self.make,
+            "model": self.model,
+            "path": self.path,
+            "caption": self.caption,
+
+        }
 
     @classmethod
     def add_image_data(

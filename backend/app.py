@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 from flask_debugtoolbar import DebugToolbarExtension
 import PIL.Image
 from werkzeug.exceptions import NotFound, BadRequest
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 from models import db, connect_db, Image
 from s3 import S3
@@ -16,7 +16,7 @@ load_dotenv()
 AWS_BUCKET_URL = "https://sarahgraup-pixly.s3.us-west-1.amazonaws.com"
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app)
 
 app.config['SECRET_KEY'] = "secret"
 
@@ -24,6 +24,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL", 'postgresql:///pixly')  # must link to db
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True  # always true to see sql in terminal
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 connect_db(app)
 
@@ -59,6 +60,7 @@ def handle_image_upload():
     returns entry recrod from db
     """
     print("inside /upload")
+    print(f"request= {request.files}")
 
     if 'file' not in request.files:
         error_msg = "No 'file' found"
@@ -69,7 +71,7 @@ def handle_image_upload():
     caption = request.form['caption']
 
     if file.filename == '':
-        error_msg = "No 'file' found"
+        error_msg = "No 'filename' found"
         return jsonify(error=error_msg)
 
     if file:
@@ -88,7 +90,7 @@ def handle_image_upload():
             error_msg = "Could not upload to aws."
             return jsonify(error=error_msg)
         #returns database entry record
-        return jsonify(image=image)
+        return jsonify(image=image.serialize())
 
 @app.get("/images/<int:id>")
 def get_image_by_id(id):
