@@ -27,8 +27,9 @@ connect_db(app)
 
 debug = DebugToolbarExtension(app)
 
+#TODO: add examples to doctsrings
 
-@app.get("/")
+@app.get("/images")
 def get_images():
     """get request to access aws images and returns images,
     optional search term
@@ -46,13 +47,15 @@ def get_images():
         url = S3.get_preassigned_url(image.path)
         print(f"url {url}")
         urls.append(url)
-
     return jsonify(urls=urls)
 
 #TODO: have errors return something with actual error message
-@app.post("/upload")
+@app.post("/images/upload")
 def handle_image_upload():
-    """Adds new photo to db and aws"""
+    """
+    Adds new photo to db and aws
+    returns entry recrod from db
+    """
     print("inside /upload")
 
     if 'file' not in request.files:
@@ -82,9 +85,10 @@ def handle_image_upload():
         except( NotFound, BadRequest):
             error_msg = "Could not upload to aws."
             return jsonify(error=error_msg)
+        #returns database entry record
+        return jsonify(image=image)
 
-        return jsonify(image=image) #IMAGE OBJECT
-@app.get("/<int:id>")
+@app.get("/images/<int:id>")
 def get_image_by_id(id):
     """
     get request to access aws image by id and returns image
@@ -97,7 +101,7 @@ def get_image_by_id(id):
 
     url = S3.get_preassigned_url(image.path)
 
-    return jsonify(url=url)
+    return jsonify(url=[url])
 
     # # add to db
     # # use id from db as filename
