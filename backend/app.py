@@ -49,7 +49,7 @@ def get_images():
         print(f"image path {image.path}")
         url = S3.get_preassigned_url(image.path)
         print(f"url {url}")
-        urls.append(url)
+        urls.append({"id":image.id, "url":url})
     return jsonify(urls=urls)
 
 #TODO: have errors return something with actual error message
@@ -89,14 +89,18 @@ def handle_image_upload():
         except( NotFound, BadRequest):
             error_msg = "Could not upload to aws."
             return jsonify(error=error_msg)
+
+        url = S3.get_preassigned_url(image.path)
+
         #returns database entry record
-        return jsonify(image=image.serialize())
+        return jsonify(urls={"id": image.id, "url":url})
 
 @app.get("/images/<int:id>")
 def get_image_by_id(id):
     """
     get request to access aws image by id and returns image
     """
+    print("inside get image by id")
     try:
         image = Image.get_image_data(id=id)
     except( NotFound, BadRequest):
@@ -105,7 +109,7 @@ def get_image_by_id(id):
 
     url = S3.get_preassigned_url(image.path)
 
-    return jsonify(url=[url])
+    return jsonify(urls=[{"id":image.id, "url":url}])
 
     # # add to db
     # # use id from db as filename
