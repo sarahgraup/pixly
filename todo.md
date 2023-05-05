@@ -33,3 +33,13 @@ Components to routes
 5/4
 - handle getting one image and one image url to display
 - start on front end
+
+
+5/5
+- handle errors in upload
+- fix home page order 
+- try to do visual component for edit form
+- fix all docstrings
+- lightning talk: closing file storage object - at 12
+- deploy - 11:30-11:45
+
