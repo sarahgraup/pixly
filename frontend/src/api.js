@@ -48,7 +48,7 @@ class PixlyApi {
 
   /** Get url for aws images with optional search term. */
 
-  static async getImagesUrlsOptionalSearch(search_term = null) {
+  static async getImagesWithUrlsOptionalSearch(search_term = null) {
     console.log("inside getImagesUrlsOptionalSearch");
     if (search_term !== null) {
       const res = await this.request("images", { search_term });
@@ -63,7 +63,7 @@ class PixlyApi {
   }
   /** Get image url by id  */
 
-  static async getImageUrl(id) {
+  static async getImageWithUrl(id) {
     console.log("inside getImageUrl");
     let res = await this.request(`images/${id}`);
     console.log("res=", res);
