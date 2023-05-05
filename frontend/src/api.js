@@ -53,12 +53,12 @@ class PixlyApi {
     if (search_term !== null) {
       const res = await this.request("images", { search_term });
       console.log("inside searchterm res=", res);
-      return res.data.urls;
+      return res.data.images;
     }
     if (search_term === null) {
       const res = await this.request(`images`);
       console.log("inside null st res=", res);
-      return res.data.urls;
+      return res.data.images;
     }
   }
   /** Get image url by id  */
@@ -67,7 +67,7 @@ class PixlyApi {
     console.log("inside getImageUrl");
     let res = await this.request(`images/${id}`);
     console.log("res=", res);
-    return res.data.urls;
+    return res.data.images;
   }
 
   /** Add new image to aws from form submission */
@@ -75,10 +75,10 @@ class PixlyApi {
   static async addNewImage(data) {
     console.log("inside addNewImage");
     console.log("data=", data)
-    const header ={ "content-type":"multipart/form-data"};
+    // const header ={ "content-type":"multipart/form-data"};
     let res = await this.request(`images/upload`, data, "post");
     console.log("res=", res);
-    return res.data.urls;
+    return res.data.images;
   }
 }
 
