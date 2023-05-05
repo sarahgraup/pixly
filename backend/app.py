@@ -36,6 +36,7 @@ debug = DebugToolbarExtension(app)
 def get_images():
     """get request to access aws images and returns images,
     optional search term
+    returns array of images with url: {images: [{img_data, url},...]}
     """
 
     search = request.args.get('search_term')
@@ -44,22 +45,22 @@ def get_images():
     else:
         images = Image.get_images_optional_search(search_term=search)
 
-    urls = []
+    images_with_urls = []
     for image in images:
         print(f"image path {image.path}")
         url = S3.get_preassigned_url(image.path)
         print(f"url {url}")
         serialize = image.serialize()
 
-        urls.append({"image_data":serialize, "url":url})
-    return jsonify(urls=urls)
+        images_with_urls.append({"image_data":serialize, "url":url})
+    return jsonify(images=images_with_urls)
 
 #TODO: have errors return something with actual error message
 @app.post("/images/upload")
 def handle_image_upload():
     """
     Adds new photo to db and aws
-    returns entry recrod from db
+    returns images with url {images: [{img_data, url}]}
     """
     print("inside /upload")
     print(f"request= {request.files}")
@@ -96,12 +97,13 @@ def handle_image_upload():
         serialize = image.serialize()
 
         #returns database entry record
-        return jsonify(urls={"image_data": serialize, "url":url})
+        return jsonify(images=[{"image_data": serialize, "url":url}])
 
 @app.get("/images/<int:id>")
 def get_image_by_id(id):
     """
-    get request to access aws image by id and returns image
+    get request to access aws image by id and returns image w url
+    output: {images: [{img_data, url}]}
     """
     print("inside get image by id")
     try:
@@ -113,7 +115,7 @@ def get_image_by_id(id):
     url = S3.get_preassigned_url(image.path)
     serialize = image.serialize()
 
-    return jsonify(urls=[{"image_data":serialize, "url":url}])
+    return jsonify(images=[{"image_data":serialize, "url":url}])
 
     # # add to db
     # # use id from db as filename
