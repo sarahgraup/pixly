@@ -1,7 +1,7 @@
 import React from "react";
-
 import { NavLink, Link } from "react-router-dom";
 import { Nav, NavItem } from "reactstrap";
+import "./NavBar.css";
 
 /**Component for NavBar
  *
@@ -9,31 +9,30 @@ import { Nav, NavItem } from "reactstrap";
  *
  * State: none
  *
- * Props: none
+ * Props: handleBackToHome parent fn to use when navigating back to home
  *
  * Links to: "/gallery", "gallery/upload"
  *
  * App -> Nav
  */
 //Bug: fix racewar
-function NavBar({handleBackToHome}) {
-    return (
-      <nav className="NavBar navbar navbar-expand-md">
-        <div className="container-fluid">
-          <Link className="navbar-brand" to="/gallery" onClick={handleBackToHome}>
-            Pixly
-          </Link>
-          <Nav className="ms-auto" navbar>
-            <NavItem>
-              <NavLink to="/images/upload">Upload</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink to="/gallery" onClick={handleBackToHome}>Gallery</NavLink>
-            </NavItem>
-          </Nav>
-        </div>
-      </nav>
-    );
-  }
-
-  export default NavBar;
+function NavBar({ handleBackToHome }) {
+  return (
+    <nav className="NavBar">
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/gallery" onClick={handleBackToHome}>
+          Pixly
+        </Link>
+        <Nav className="Navbar" navbar>
+          <NavItem className="NavItem">
+            <NavLink className="NavLink" to="/images/upload">Upload</NavLink>
+          </NavItem>
+          <NavItem className="NavItem">
+            <NavLink className="NavLink" to="/gallery" onClick={handleBackToHome}>Gallery</NavLink>
+          </NavItem>
+        </Nav>
+      </div>
+    </nav>
+  );
+}
+export default NavBar;

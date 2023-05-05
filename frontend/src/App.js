@@ -1,10 +1,6 @@
 import './App.css';
 import React, { useState, useEffect, useNavigate } from "react";
-import { BrowserRouter, Navigate } from "react-router-dom";
 import PixlyApi from './api';
-// import UploadImageForm from './forms/UploadImageForm';
-// import ImageList from './images/ImageList';
-// import axios from "axios";
 import RoutesList from './routes-nav/RoutesList';
 import NavBar from './routes-nav/NavBar';
 
@@ -12,8 +8,8 @@ import NavBar from './routes-nav/NavBar';
  *
  * State:
  * - isLoading boolean
- * - images array of image urls
- * - currSearchTerm string
+ * - imagesData: images array [0:{image_data:..., url:...},1:{...}, ...]
+ * - currSearchTerm string 
  *
  * Props:
  * - none
@@ -23,23 +19,19 @@ import NavBar from './routes-nav/NavBar';
 function App() {
   console.log("Inside app");
   const [isLoading, setIsLoading] = useState(false);
-  const [imagesUrls, setImagesUrls] = useState(null);
+  const [imagesData, setImagesData] = useState(null);
   const [currSearchTerm, setCurrSearchTerm] = useState("");
-  const [uploadImage, setUploadImage] = useState(null);
-  console.log("state app=", "imagesUrls=", imagesUrls, "isLoading", isLoading);
-  // const navigate= useNavigate();
+  // console.log("state app=", "imagesUrls=", imagesData, "isLoading", isLoading);
 
-  function handleBackToHome(){
-    console.log("in handle back");
-
+  /**clears search term when navigating back to home */
+  function handleBackToHome() {
     setCurrSearchTerm("");
   }
 
-
   useEffect(function loadImageUrls() {
-    console.log("Inside loadImageUrls");
+    // console.log("Inside loadImageUrls");
     async function fetchUrls() {
-      console.log("Inside fetchUrls");
+      // console.log("Inside fetchUrls");
       setIsLoading(true);
       let urls = null;
       try {
@@ -53,7 +45,7 @@ function App() {
         console.error("fetchUrls problem fetching", err);
       }
       setIsLoading(false);
-      setImagesUrls(urls);
+      setImagesData(urls);
     }
     fetchUrls();
   }, [currSearchTerm]);
@@ -63,25 +55,23 @@ function App() {
    * formData = {file, caption}
    */
   async function handleUpload(formData) {
-    console.log("inside handleUpload");
+    // console.log("inside handleUpload");
     const { file, caption } = formData;
-    console.log("file", file, "caption", caption);
+    // console.log("file", file, "caption", caption);
     const data = new FormData();
 
     data.append('file', file);
     data.append('caption', caption);
-    console.log("data=", data);
+    // console.log("data=", data);
     try {
       const newImage = (await PixlyApi.addNewImage(data))[0];
       console.log("add new image", newImage);
-      // const newUrl = newImage.url;
-      setUploadImage(newImage);
-      setImagesUrls(images=>([...images, newImage]))
+      setImagesData(images => ([newImage, ...images]))
     } catch (err) {
       console.error(err);
     }
   }
-  console.log("after adding new image", imagesUrls);
+  console.log("after adding new image", imagesData);
   if (isLoading === true) {
     return "Im looking...";
   }
@@ -90,26 +80,22 @@ function App() {
     setCurrSearchTerm(formData);
   }
 
-
   if (isLoading) {
     return (
       <p>isLoading</p>
     );
   }
   return (
-
-
-      <div className="App">
-        <NavBar handleBackToHome={handleBackToHome} />
-        {imagesUrls !== null &&
-          <RoutesList handleUpload={handleUpload}
-          images={imagesUrls}
+    <div className="App">
+      <NavBar handleBackToHome={handleBackToHome} />
+      {imagesData !== null &&
+        <RoutesList handleUpload={handleUpload}
+          images={imagesData}
           handleSearch={handleSearch}
           currSearchTerm={currSearchTerm}
-          setCurrSearchTerm={setCurrSearchTerm}/>
-        }
-      </div>
-
+          setCurrSearchTerm={setCurrSearchTerm} />
+      }
+    </div>
   );
 }
 

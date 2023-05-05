@@ -1,6 +1,4 @@
 import { useState } from "react";
-
-
 /** SearchForm
  *
  * Form to search for companies or jobs
@@ -15,10 +13,10 @@ import { useState } from "react";
  */
 
 function SearchForm({ handleSearch, currSearchTerm }) {
-  console.log("SearchForm ran");
-  console.log("currSearchTerm", currSearchTerm);
+  // console.log("SearchForm ran");
+  // console.log("currSearchTerm", currSearchTerm);
   const [formData, setFormData] = useState({ searchTerm: currSearchTerm });
-  console.log("formData", formData);
+  // console.log("formData", formData);
 
   /** Update form input. */
   function handleChange(evt) {

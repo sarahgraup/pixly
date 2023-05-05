@@ -3,14 +3,15 @@
  *
  * props:
  *  - image {image_data. url}
+ * 
+ * state:none
  */
 //TODO: create function to remove spaces
 function ExifData ({image}){
-  console.log("inside ExifData");
-  console.log("image=", image);
+  // console.log("inside ExifData");
+  // console.log("image=", image);
   const imageData = image.image_data
-  console.log("imagedata=", imageData);
-
+  // console.log("imagedata=", imageData);
 
   return(
     <div className="ExifData">

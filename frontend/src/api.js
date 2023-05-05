@@ -1,4 +1,3 @@
-// const axios = require("axios");
 import axios from "axios";
 
 
@@ -14,7 +13,7 @@ const BASE_URL = "http://127.0.0.1:5001";
 
 class PixlyApi {
 
-  static async request(endpoint, data = {}, method = "get", header=null) {
+  static async request(endpoint, data = {}, method = "get", header = null) {
     console.debug("API Call:", endpoint, data, method);
 
     const url = `${BASE_URL}/${endpoint}`;
@@ -25,7 +24,7 @@ class PixlyApi {
     console.log("params=", params);
     try {
       let res = null;
-      if (header === null){
+      if (header === null) {
         res = (await axios({ url, method, data, params }));
       }
       else {
@@ -81,20 +80,5 @@ class PixlyApi {
     return res.data.images;
   }
 }
-
-// async function testGetImage() {
-//   const url = await PixlyApi.getImageUrl(1);
-//   console.log("url inside test", url);
-// }
-
-// async function testGetAllImages() {
-//   const url = await PixlyApi.getImagesUrlsOptionalSearch();
-//   const urlSearch = await PixlyApi.getImagesUrlsOptionalSearch("not");
-//   console.log("url inside test", url);
-//   console.log("url search inside test", urlSearch);
-// }
-
-
-// testGetAllImages();
 
 export default PixlyApi;

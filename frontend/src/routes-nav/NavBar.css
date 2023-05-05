@@ -1,0 +1,33 @@
+.NavBar{
+    display:flex;
+    top:0;
+    width:100%;
+    background-color: rgb(85, 85, 85);
+    margin-bottom:20px;
+
+}
+
+.navbar-brand{
+    flex:1 1 200px;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-size: 17px;
+
+}
+
+.NavItem{
+    display: inline-block;
+    text-align: center;
+    padding-left: 10px;   
+    margin-right: auto;
+    
+ 
+
+}
+.NavLink{
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-size: 17px;
+
+}
+/* TODO: active link bold? */

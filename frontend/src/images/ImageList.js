@@ -1,15 +1,18 @@
 import ImageCard from "./ImageCard";
 import { Link } from "react-router-dom";
+import "./ImageList.css";
 /**ImageList
  * Visual component to render list of ImageCards
  *
  * props:
- *  -imgUrls [url,...]
+ *  -images array [0:{image_data:..., url:...},1:{...}, ...]
+ * 
+ * state:none
  */
 
 function ImageList({ images }) {
-  console.log("inside ImageList");
-  console.log("imgUrls=", images);
+  // console.log("inside ImageList");
+  // console.log("imgUrls=", images);
 
   return (
     <div className="ImageList">

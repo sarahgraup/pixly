@@ -2,14 +2,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 /**
  * UploadImageForm component
+ * form to upload image with file and caption input 
+ * catches errors and displays 
  *
  * State:
  * Form Data
  *
  * Props:
- * handleUpload
+ * handleUpload parent function to update state of image array
+ * 
+ * App -> RoutesList -> UploadImageForm
  */
 
+//TODO: FIX ERROR HANDLING  
 function UploadImageForm({ handleUpload }) {
     const [formData, setFormData] = useState({
         file: null,
@@ -38,7 +43,7 @@ function UploadImageForm({ handleUpload }) {
     /**handle form data changing */
     function handleChange(evt) {
         if (evt.target.name === "file") {
-            console.log("value of file", evt.target.files[0]);
+            // console.log("value of file", evt.target.files[0]);
             setFormData(f => ({
                 ["caption"]: f["caption"],
                 ["file"]: evt.target.files[0],

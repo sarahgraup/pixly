@@ -1,0 +1,18 @@
+img{
+   object-fit: cover;
+   max-width:80%;
+   vertical-align: middle;
+   border-radius: 5px;
+   height:15.625rem;
+   box-shadow: 5px 5px 10px 1px grey;
+   border-radius: 10px;
+  
+      
+}
+
+/* img:hover{
+    /* transform: translate3d(0, 0, 0);*/
+    /* animation: zoomin .5s ease; 
+    transform: scale(1.5);
+    -webkit-transform: translate(0, 0%);
+} */ 
