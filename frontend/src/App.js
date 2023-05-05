@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Navigate } from "react-router-dom";
 import PixlyApi from './api';
 // import UploadImageForm from './forms/UploadImageForm';
 // import ImageList from './images/ImageList';
@@ -24,9 +24,18 @@ function App() {
   console.log("Inside app");
   const [isLoading, setIsLoading] = useState(false);
   const [imagesUrls, setImagesUrls] = useState(null);
-  const [currSearchTerm, setCurrSearchTerm] = useState(null);
+  const [currSearchTerm, setCurrSearchTerm] = useState("");
   const [uploadImage, setUploadImage] = useState(null);
   console.log("state app=", "imagesUrls=", imagesUrls, "isLoading", isLoading);
+  // const navigate= useNavigate();
+
+  function handleBackToHome(){
+    console.log("in handle back");
+    setCurrSearchTerm("");
+    return <Navigate to="/gallery"/>;
+   
+    
+  }
 
 
   useEffect(function loadImageUrls() {
@@ -36,10 +45,10 @@ function App() {
       setIsLoading(true);
       let urls = null;
       try {
-        if (currSearchTerm !== null) {
+        if (currSearchTerm.length !== 0) {
           urls = await PixlyApi.getImagesUrlsOptionalSearch(currSearchTerm);
         }
-        if (currSearchTerm === null) {
+        if (currSearchTerm.length === 0) {
           urls = await PixlyApi.getImagesUrlsOptionalSearch();
         }
       } catch (err) {
@@ -91,14 +100,18 @@ function App() {
   }
   return (
 
-    <BrowserRouter>
+    
       <div className="App">
-        <NavBar />
+        <NavBar handleBackToHome={handleBackToHome} />
         {imagesUrls !== null &&
-          <RoutesList handleUpload={handleUpload} images={imagesUrls} handleSearch={handleSearch} />
+          <RoutesList handleUpload={handleUpload} 
+          images={imagesUrls} 
+          handleSearch={handleSearch} 
+          currSearchTerm={currSearchTerm} 
+          setCurrSearchTerm={setCurrSearchTerm}/>
         }
       </div>
-    </BrowserRouter>
+
   );
 }
 

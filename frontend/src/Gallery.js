@@ -1,7 +1,9 @@
 import ImageList from "./images/ImageList";
-function Gallery({images, handleSearch}){
+import SearchForm from "./forms/SearchForm";
+function Gallery({images, handleSearch, currSearchTerm}){
     return(
         <div className="Gallery">
+            <SearchForm handleSearch={handleSearch} currSearchTerm={currSearchTerm}/>
             <ImageList images={images}/>
 
         </div>

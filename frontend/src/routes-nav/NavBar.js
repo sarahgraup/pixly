@@ -15,11 +15,11 @@ import { Nav, NavItem } from "reactstrap";
  * 
  * App -> Nav
  */
-function NavBar() {
+function NavBar({handleBackToHome}) {
     return (
       <nav className="NavBar navbar navbar-expand-md">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/gallery">
+          <Link className="navbar-brand" onClick={handleBackToHome}>
             Pixly
           </Link>
           <Nav className="ms-auto" navbar>
@@ -27,7 +27,7 @@ function NavBar() {
               <NavLink to="/images/upload">Upload</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink to="/gallery">Gallery</NavLink>
+              <NavLink onClick={handleBackToHome}>Gallery</NavLink>
             </NavItem>
           </Nav>
         </div>
