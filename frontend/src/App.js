@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useNavigate } from "react";
 import { BrowserRouter, Navigate } from "react-router-dom";
 import PixlyApi from './api';
 // import UploadImageForm from './forms/UploadImageForm';
@@ -31,10 +31,8 @@ function App() {
 
   function handleBackToHome(){
     console.log("in handle back");
+
     setCurrSearchTerm("");
-    return <Navigate to="/gallery"/>;
-   
-    
   }
 
 
@@ -100,14 +98,14 @@ function App() {
   }
   return (
 
-    
+
       <div className="App">
         <NavBar handleBackToHome={handleBackToHome} />
         {imagesUrls !== null &&
-          <RoutesList handleUpload={handleUpload} 
-          images={imagesUrls} 
-          handleSearch={handleSearch} 
-          currSearchTerm={currSearchTerm} 
+          <RoutesList handleUpload={handleUpload}
+          images={imagesUrls}
+          handleSearch={handleSearch}
+          currSearchTerm={currSearchTerm}
           setCurrSearchTerm={setCurrSearchTerm}/>
         }
       </div>
