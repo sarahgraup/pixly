@@ -2,7 +2,7 @@
  * Visual component to display exif data
  *
  * props:
- *  - image
+ *  - image {image_data. url}
  */
 //TODO: create function to remove spaces
 function ExifData ({image}){
@@ -14,8 +14,8 @@ function ExifData ({image}){
 
   return(
     <div className="ExifData">
-      {Object.keys(imageData).map(key => (
-        <p><b>{key.split("_").join(" ")}</b>: {imageData[key]}</p>
+      {Object.keys(imageData).map(k => (
+        <p key={k}><b>{k.split("_").join(" ")}</b>: {imageData[k]}</p>
       ) )}
     </div>
   )
