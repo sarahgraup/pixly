@@ -9,9 +9,10 @@ import ImageCard from "./ImageCard";
 function ImageList ({imgUrls}){
   console.log("inside ImageList");
   console.log("imgUrls=", imgUrls);
+  
   return (
     <div className="ImageList">
-    {imgUrls.map(u => (<ImageCard key={u.id} url={u.url} />))}
+    {imgUrls.map(u => (<ImageCard key={u.image_data.id} url={u.url} caption={u.image_data.caption}/>))}
     </div>
   )
 

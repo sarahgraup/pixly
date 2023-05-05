@@ -1,9 +1,12 @@
 import './App.css';
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
+import { BrowserRouter } from "react-router-dom";
 import PixlyApi from './api';
-import UploadImageForm from './forms/UploadImageForm';
-import ImageList from './images/ImageList';
-import axios from "axios";
+// import UploadImageForm from './forms/UploadImageForm';
+// import ImageList from './images/ImageList';
+// import axios from "axios";
+import RoutesList from './routes-nav/RoutesList';
+import NavBar from './routes-nav/NavBar';
 
 /**Pixly application
  *
@@ -23,7 +26,7 @@ function App() {
   const [imagesUrls, setImagesUrls] = useState(null);
   const [currSearchTerm, setCurrSearchTerm] = useState(null);
   const [uploadImage, setUploadImage] = useState(null);
-  console.log("state app=", "imagesUrls=", imagesUrls, "isLoading", isLoading );
+  console.log("state app=", "imagesUrls=", imagesUrls, "isLoading", isLoading);
 
 
   useEffect(function loadImageUrls() {
@@ -54,7 +57,7 @@ function App() {
    */
   async function handleUpload(formData) {
     console.log("inside handleUpload");
-    const {file, caption} = formData;
+    const { file, caption } = formData;
     console.log("file", file, "caption", caption);
     const data = new FormData();
 
@@ -65,24 +68,28 @@ function App() {
       const newImage = await PixlyApi.addNewImage(data);
       const newUrl = newImage.urls;
       setUploadImage(newUrl);
-      setImagesUrls(()=> [...imagesUrls, newUrl])
+      setImagesUrls(() => [...imagesUrls, newUrl])
     } catch (err) {
       console.error(err);
     }
   }
-  if (isLoading === true){
+  if (isLoading === true) {
     return "Im looking...";
+  }
+
+  function handleSearch(formData) {
+    setCurrSearchTerm(formData);
   }
 
 
 
-
   return (
-    <div className="App">
-      <UploadImageForm handleUpload={handleUpload}></UploadImageForm>
-      {imagesUrls && <ImageList imgUrls={imagesUrls} />}
-
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <NavBar />
+        <RoutesList handleUpload={handleUpload} images={imagesUrls} handleSearch={handleSearch} />
+      </div>
+    </BrowserRouter>
   );
 }
 
