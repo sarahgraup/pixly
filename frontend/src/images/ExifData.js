@@ -3,7 +3,7 @@
  *
  * props:
  *  - image {image_data. url}
- * 
+ *
  * state:none
  */
 //TODO: create function to remove spaces
@@ -15,7 +15,7 @@ function ExifData ({image}){
 
   return(
     <div className="ExifData">
-      {Object.keys(imageData).map(k => (
+      {Object.keys(imageData).map(k => ( imageData[k] &&
         <p key={k}><b>{k.split("_").join(" ")}</b>: {imageData[k]}</p>
       ) )}
     </div>
