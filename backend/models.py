@@ -64,35 +64,10 @@ class Image (db.Model):
         nullable=False
     )
 
-    # @classmethod
-    # def add_image_data(cls,
-    #                       path,
-    #                       caption,
-    #                       date_time_uploaded=None,
-    #                       date_time_created=None,
-    #                       gps_latitude=None,
-    #                       gps_longitude=None,
-    #                       make=None,
-    #                       model=None):
-    #     """uploads image properties to db"""
-    #     # change to add or save image data
-    #     date_time_uploaded= datetime.datetime.utcnow()
-
-    #     image = Image(path=path,
-    #                   caption=caption,
-    #                   date_time_uploaded=date_time_uploaded,
-    #                   date_time_created=date_time_created,
-    #                   gps_latitude=gps_latitude,
-    #                   gps_longitude=gps_longitude,
-    #                   make=make,
-    #                   model=model)
-    #     db.session.add(image)
-    #     db.session.commit()
-    #     return image
     def serialize(self):
         """Serialize instance"""
         return {
-            "id":self.id,
+            "id": self.id,
             "date_time_uploaded": self.date_time_uploaded,
             "date_time_created": self.date_time_created,
             "gps_latitude": self.gps_latitude,
@@ -121,9 +96,9 @@ class Image (db.Model):
         # change to add or save image data
 
         print(f"add_img_data file {file}")
-        #grab exif data from image
+        # grab exif data from image
         exif_data = cls.get_img_exif_data(file=file)
-        #exif variables of interes for db
+        # exif variables of interes for db
         gps_latitude = gps_longitude = date_time_created = make = model = None
         if "GPSLatitude" in exif_data:
             gps_latitude = exif_data["GPSLatitude"]
