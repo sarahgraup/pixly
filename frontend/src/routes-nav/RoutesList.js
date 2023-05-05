@@ -4,23 +4,23 @@ import ImagePage from '../images/ImagePage';
 import UploadImageForm from '../forms/UploadImageForm';
 
 /**Component for RoutesList
- * 
- * Routes to all site paths 
- * 
+ *
+ * Routes to all site paths
+ *
  * Props:
  *  - images array of objects [{image_data:.., url:..}, ...]
  *  - handleUpload: parent function for upload image form
- *  - handleSearch: calls parent fn to update search term 
- * 
+ *  - handleSearch: calls parent fn to update search term
+ *
  * State:none
- * 
- * App -> RoutesList 
- * 
+ *
+ * App -> RoutesList
+ *
  * connects links to components:
- *  - Gallery /gallery 
+ *  - Gallery /gallery
  *  - ImagePage /gallery/id
  *  - UploadImageForm /images/upload
- *  - 
+ *  -
  * */
 function RoutesList({ handleUpload, images, handleSearch, currSearchTerm }) {
     return (
