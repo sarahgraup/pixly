@@ -97,7 +97,7 @@ def handle_image_upload():
         serialize = image.serialize()
 
         #returns database entry record
-        return jsonify(images={"image_data": serialize, "url":url})
+        return jsonify(images=[{"image_data": serialize, "url":url}])
 
 @app.get("/images/<int:id>")
 def get_image_by_id(id):
