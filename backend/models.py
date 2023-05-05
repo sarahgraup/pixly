@@ -90,6 +90,7 @@ class Image (db.Model):
     #     db.session.commit()
     #     return image
     def serialize(self):
+        """Serialize instance"""
         return {
             "id":self.id,
             "date_time_uploaded": self.date_time_uploaded,
@@ -109,11 +110,20 @@ class Image (db.Model):
             path,
             file,
             caption):
-        """uploads image properties to db"""
+        """
+        uploads image properties to db
+            Input:
+            - path: aws key path
+            - file: filestorage obj, .jpeg
+            - caption: caption for img
+        Calls cls.get_img_exif_data
+        """
         # change to add or save image data
 
         print(f"add_img_data file {file}")
+        #grab exif data from image
         exif_data = cls.get_img_exif_data(file=file)
+        #exif variables of interes for db
         gps_latitude = gps_longitude = date_time_created = make = model = None
         if "GPSLatitude" in exif_data:
             gps_latitude = exif_data["GPSLatitude"]
@@ -143,7 +153,7 @@ class Image (db.Model):
 
     @classmethod
     def get_image_data(cls, id):  # fetch
-        """downloads image properties from db"""
+        """downloads image properties from db or returns 404"""
         print("download_image ran")
 
         image = cls.query.get_or_404(id)
@@ -151,7 +161,9 @@ class Image (db.Model):
 
     @classmethod
     def get_images_optional_search(cls, search_term=None):
-        """downloads images matching search_term from db"""
+        """
+        downloads images, where caption includes matching search_term, from db
+        """
         # print("inside get_images_by_search")
         if not search_term:
             # print("inside NOT search")
