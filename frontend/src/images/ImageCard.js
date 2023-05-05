@@ -3,17 +3,19 @@ import { Link } from "react-router-dom";
  * Simple visual component displaying image
  *
  * props:
- *  - imgUrl = ["url"]
+ *  - image =
  */
 //TODO: use Card class from bootsrap
 //TODO: update props to take in data for alt
-function ImageCard({ id, url, caption }) {
+function ImageCard({ image }) {
+  console.log("Inside ImageCard");
+  console.log("image=", image);
+  const imageData = image.image_data;
+  console.log("imgdata", imageData);
+
   return (
     <div className="ImageCard">
-      <Link to={`/gallery/${id}`}>
-        <img src={url} alt={id}></img>
-        <p>{caption}</p>
-      </Link>
+        <img src={image.url} alt={imageData.id}></img>
     </div>
   )
 }
