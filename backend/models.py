@@ -91,6 +91,7 @@ class Image (db.Model):
     #     return image
     def serialize(self):
         return {
+            "id":self.id,
             "date_time_uploaded": self.date_time_uploaded,
             "date_time_created": self.date_time_created,
             "gps_latitude": self.gps_latitude,
