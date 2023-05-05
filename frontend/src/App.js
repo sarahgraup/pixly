@@ -44,10 +44,10 @@ function App() {
       let urls = null;
       try {
         if (currSearchTerm.length !== 0) {
-          urls = await PixlyApi.getImagesUrlsOptionalSearch(currSearchTerm);
+          urls = await PixlyApi.getImagesWithUrlsOptionalSearch(currSearchTerm);
         }
         if (currSearchTerm.length === 0) {
-          urls = await PixlyApi.getImagesUrlsOptionalSearch();
+          urls = await PixlyApi.getImagesWithUrlsOptionalSearch();
         }
       } catch (err) {
         console.error("fetchUrls problem fetching", err);
@@ -72,7 +72,7 @@ function App() {
     data.append('caption', caption);
     console.log("data=", data);
     try {
-      const newImage = await PixlyApi.addNewImage(data);
+      const newImage = (await PixlyApi.addNewImage(data))[0];
       console.log("add new image", newImage);
       // const newUrl = newImage.url;
       setUploadImage(newImage);
