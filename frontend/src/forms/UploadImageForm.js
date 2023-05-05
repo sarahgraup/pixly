@@ -78,10 +78,14 @@ function UploadImageForm({ handleUpload }) {
                     </p>
                 }
 
-                <button type="submit" className="UploadImageForm-uploadButton">submit</button>
+                <button
+                    type="submit"
+                    className="UploadImageForm-uploadButton">
+                    submit
+                </button>
             </form>
         </div>
-    )
+    );
 
 }
 
