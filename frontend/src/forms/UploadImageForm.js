@@ -1,43 +1,39 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import "./UploadImageForm.css";
 /**
  * UploadImageForm component
- * form to upload image with file and caption input 
- * catches errors and displays 
+ * form to upload image with file and caption input
+ * catches errors and displays
  *
  * State:
  * Form Data
  *
  * Props:
  * handleUpload parent function to update state of image array
- * 
+ *
  * App -> RoutesList -> UploadImageForm
  */
 
-//TODO: FIX ERROR HANDLING  
+//TODO: FIX ERROR HANDLING WITH BETTER MESSAGE
 function UploadImageForm({ handleUpload }) {
     const [formData, setFormData] = useState({
         file: null,
         caption: ""
     });
-
-    const navigate = useNavigate();
     const [formErrors, setFormErrors] = useState(null);
+    const navigate = useNavigate();
 
     /**Handle form submission*/
     async function handleSubmit(evt) {
         evt.preventDefault();
-
         try {
+            formData.caption = formData.caption.trim();
             await handleUpload(formData);
             navigate("/gallery");
-
-
         } catch (err) {
             setFormErrors(err);
-
         }
-
     }
 
     /**handle form data changing */
@@ -60,29 +56,36 @@ function UploadImageForm({ handleUpload }) {
 
     return (
         <div className="UploadImageForm">
-            <form onSubmit={handleSubmit}>
-                <label> {`Selected Image: `}
+            <h1>Upload an Image to Pix.ly</h1>
+            <form className="UploadImageForm-form" onSubmit={handleSubmit}>
+                <div>
+                <label> Selected Image:
                     <input
                         type="file"
                         name="file"
-                        onChange={handleChange}>
+                        onChange={handleChange}
+                        required>
                     </input>
                 </label>
-                <label> Caption
+                </div>
+                <div>
+                <label> Caption:
                     <input
-                        type="text"
+                        type="textbox"
                         name="caption"
                         value={formData.caption}
-                        onChange={handleChange}>
+                        onChange={handleChange}
+                        pattern={{ value: "^[^\s]+(\s+[^\s]+)*$" }}
+                        required>
                     </input>
                 </label>
+                </div>
 
                 {formErrors !== null &&
                     <p>
                         Errors: {formErrors}
                     </p>
                 }
-
                 <button
                     type="submit"
                     className="UploadImageForm-uploadButton">

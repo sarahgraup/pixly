@@ -1,0 +1,33 @@
+/* .UploadImageForm-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+label {
+    text-align: right;
+    align-items: stretch;
+    margin-right: auto;
+    margin-left: auto;
+} */
+
+.UploadImageForm {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.UploadImageForm form {
+    display: flex;
+    flex-direction: column;
+  }
+
+.UploadImageForm form > div {
+    display: flex;
+
+  }
+
+  .UploadImageForm label,
+  .UploadImageForm input {
+    height: 25px;
+    padding: 5px;
+    box-sizing: border-box;
+  }
