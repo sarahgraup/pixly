@@ -24,7 +24,7 @@ function NavBar() {
           </Link>
           <Nav className="ms-auto" navbar>
             <NavItem>
-              <NavLink to="/gallery/upload">Upload</NavLink>
+              <NavLink to="/images/upload">Upload</NavLink>
             </NavItem>
             <NavItem>
               <NavLink to="/gallery">Gallery</NavLink>

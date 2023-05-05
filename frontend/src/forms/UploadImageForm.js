@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 /**
  * UploadImageForm component
  *
@@ -15,11 +16,23 @@ function UploadImageForm({ handleUpload }) {
         caption: ""
     });
 
+    const navigate = useNavigate();
+    const [formErrors, setFormErrors] = useState(null);
+
     /**Handle form submission*/
-    function handleSubmit(evt) {
+    async function handleSubmit(evt) {
         evt.preventDefault();
 
-        handleUpload(formData);
+        try {
+            await handleUpload(formData);
+            navigate("/gallery");
+
+
+        } catch (err) {
+            setFormErrors(err);
+
+        }
+
     }
 
     /**handle form data changing */
@@ -58,6 +71,13 @@ function UploadImageForm({ handleUpload }) {
                         onChange={handleChange}>
                     </input>
                 </label>
+
+                {formErrors !== null &&
+                    <p>
+                        Errors: {formErrors}
+                    </p>
+                }
+
                 <button type="submit" className="UploadImageForm-uploadButton">submit</button>
             </form>
         </div>

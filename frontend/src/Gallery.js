@@ -1,6 +1,11 @@
+import ImageList from "./images/ImageList";
 function Gallery({images, handleSearch}){
     return(
-        <p>gallery</p>
+        <div className="Gallery">
+            <ImageList images={images}/>
+
+        </div>
+       
     );
 
 

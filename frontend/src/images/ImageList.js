@@ -6,13 +6,13 @@ import ImageCard from "./ImageCard";
  *  -imgUrls [url,...]
  */
 
-function ImageList ({imgUrls}){
+function ImageList ({images}){
   console.log("inside ImageList");
-  console.log("imgUrls=", imgUrls);
+  console.log("imgUrls=", images);
   
   return (
     <div className="ImageList">
-    {imgUrls.map(u => (<ImageCard key={u.image_data.id} url={u.url} caption={u.image_data.caption}/>))}
+    {images.map(u => (<ImageCard key={u.image_data.id} url={u.url} caption={u.image_data.caption}/>))}
     </div>
   )
 

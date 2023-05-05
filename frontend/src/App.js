@@ -66,13 +66,15 @@ function App() {
     console.log("data=", data);
     try {
       const newImage = await PixlyApi.addNewImage(data);
-      const newUrl = newImage.urls;
-      setUploadImage(newUrl);
-      setImagesUrls(() => [...imagesUrls, newUrl])
+      console.log("add new image", newImage);
+      // const newUrl = newImage.url;
+      setUploadImage(newImage);
+      setImagesUrls(images=>([...images, newImage]))
     } catch (err) {
       console.error(err);
     }
   }
+  console.log("after adding new image", imagesUrls);
   if (isLoading === true) {
     return "Im looking...";
   }
@@ -82,12 +84,19 @@ function App() {
   }
 
 
-
+  if (isLoading) {
+    return (
+      <p>isLoading</p>
+    );
+  }
   return (
+
     <BrowserRouter>
       <div className="App">
         <NavBar />
-        <RoutesList handleUpload={handleUpload} images={imagesUrls} handleSearch={handleSearch} />
+        {imagesUrls !== null &&
+          <RoutesList handleUpload={handleUpload} images={imagesUrls} handleSearch={handleSearch} />
+        }
       </div>
     </BrowserRouter>
   );

@@ -78,7 +78,7 @@ class PixlyApi {
     const header ={ "content-type":"multipart/form-data"};
     let res = await this.request(`images/upload`, data, "post");
     console.log("res=", res);
-    return res.data.image;
+    return res.data.urls;
   }
 }
 
