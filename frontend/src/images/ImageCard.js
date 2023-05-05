@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
 /**ImageCard
  * Simple visual component displaying image
  *
  * props:
- *  - image =
+ *  - image = {img_data, url}
  */
 //TODO: use Card class from bootsrap
 //TODO: update props to take in data for alt
@@ -15,7 +14,7 @@ function ImageCard({ image }) {
 
   return (
     <div className="ImageCard">
-        <img src={image.url} alt={imageData.id}></img>
+        <img src={image.url} alt={imageData.caption}></img>
     </div>
   )
 }
