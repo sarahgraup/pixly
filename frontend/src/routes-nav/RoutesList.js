@@ -25,12 +25,23 @@ import UploadImageForm from '../forms/UploadImageForm';
 function RoutesList({ handleUpload, images, handleSearch, currSearchTerm }) {
     return (
         <div>
-        <Routes>
-            <Route path="/gallery" element={<Gallery images={images} handleSearch={handleSearch} currSearchTerm={currSearchTerm} />}></Route>
-            <Route path="/gallery/:id" element={<ImagePage images={images} />}></Route >
-            <Route path="/images/upload" element={<UploadImageForm handleUpload={handleUpload} />}></Route>
-            <Route path="*" element={<Navigate to="/gallery"/>}/>
-        </Routes>
+            <Routes>
+                <Route
+                    path="/gallery"
+                    element={<Gallery images={images}
+                        handleSearch={handleSearch}
+                        currSearchTerm={currSearchTerm} />}>
+                </Route>
+                <Route
+                    path="/gallery/:id"
+                    element={<ImagePage images={images} />}>
+                </Route>
+                <Route
+                    path="/images/upload"
+                    element={<UploadImageForm handleUpload={handleUpload} />}>
+                </Route>
+                <Route path="*" element={<Navigate to="/gallery" />} />
+            </Routes>
         </div>
     );
 }
